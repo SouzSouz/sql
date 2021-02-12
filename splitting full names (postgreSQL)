@@ -1,0 +1,21 @@
+-- here I split the full_name column from the prospects table into a first_name column and a last_name column
+-- after inspecting the full_name table, I notice there are titles in the full_name column that need to be taken into account
+-- i select the full_name, first_name, and last_name column to test the code and see if there are any discrepancies 
+
+
+select full_name, 
+(case 
+when split_part(full_name, ' ', 1) in ('MR.', 'DR.', 'MS.', 'MISS', 'MRS.') then split_part(full_name, ' ', 2)
+else split_part(full_name, ' ', 1)
+end) as first_name,
+(case
+when split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1)) in ('II', 'IV', 'VI', 'SR.', 'JR.', 'I', 'III', 'V', 'VII') 
+then (split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1) -1) || ' ' || split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1))) 
+when split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1)) in ('MD', 'PHD') 
+then split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1) -1)
+else split_part(full_name, ' ', array_length(regexp_split_to_array(full_name, ' '), 1))
+end) as last_name
+from prospects
+
+
+
