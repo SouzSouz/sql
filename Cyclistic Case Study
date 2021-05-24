@@ -1,0 +1,75 @@
+-- I'd like to share my code for analyzing certain aspects of data gathered by a bike sharing company
+-- I want to look at a few things
+
+
+-- Using the code below, I was able in the FROM subquery to take into account other variables that might be needed
+--  I was also previously able to identify where the null values are in the data set and what kind of consistency issues we might face
+-- Thankfully, most string values were consistent and non-null. However, the station id and names (starting and ending stations) needed to be accounted for
+-- At first, I wanted to know how long do most people use their bikes. This will give me insight into rider behaviour
+
+
+SELECT 
+
+duration  as duration,
+count(*) as frequency
+
+FROM (SELECT 
+*,
+extract(hour from started_at) as hour, 
+date_diff(ended_at, started_at, minute) as duration
+ FROM `cyclistic-313820.trips2019Q1.2020_08_Data` 
+ where start_station_id is not null and end_station_id is not null and start_station_name is not null and end_station_name is not null
+ and member_casual = "casual")
+ group by duration
+ order by frequency desc
+
+
+-- After looking at the most popular durations and plotting to see what the most popular durations are in a range, I found that 
+-- I could narrow down some of my analysis
+-- Next step was looking at the most popular time of day to bike. To make things easier and more readable, I converted the hour extracted into meaningful strings
+
+SELECT 
+
+
+(CASE
+WHEN hour < 12 THEN hour || " am"
+WHEN hour = 12 THEN "12 pm"
+ELSE (hour - 12) || " pm"
+END) as time,
+count(*) as frequency
+
+FROM (SELECT 
+*,
+extract(hour from started_at) as hour, 
+date_diff(ended_at, started_at, minute) as duration
+ FROM `cyclistic-313820.trips2019Q1.2020_08_Data` 
+ where start_station_id is not null and end_station_id is not null and start_station_name is not null and end_station_name is not null
+ and member_casual = "casual"
+ and date_diff(ended_at, started_at, minute) between 3 and 30)
+ group by time
+ order by frequency desc
+ 
+ 
+ -- Next step was looking at the most popular stations and seeing whether there can be insights we can pull from the findings 
+ 
+ SELECT 
+
+start_station_name,
+count(*) as frequency
+
+FROM (SELECT 
+*,
+extract(hour from started_at) as hour, 
+date_diff(ended_at, started_at, minute) as duration
+ FROM `cyclistic-313820.trips2019Q1.2021_07_Data` 
+ where start_station_id is not null and end_station_id is not null and start_station_name is not null and end_station_name is not null
+ and member_casual = "casual"
+ and date_diff(ended_at, started_at, minute) between 3 and 30)
+ group by start_station_name
+ order by frequency desc
+ 
+ -- Please note that the datasets and tables are not consistent. This is because I used the same code on various tested monthly user data to find consistency in the findings
+ 
+ -- I found insights that were interesting, given the data I had, and I found to have some limitations as well in some of the variables I hoped I could study
+ -- More analysis can be done to find more correlations
+
