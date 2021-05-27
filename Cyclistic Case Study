@@ -1,11 +1,11 @@
 -- Please note the coloring and formatting of the file isn't SQL specific: I used the Big Query Console for running the code and storing the datasets, 
--- which doesn
+-- which doesn't allow me to save queries localy. Code is available for share if needed
+-- I've also used Sheets to visualize my findings, which were then shared as a presentation. Also, the presentation and visualizations are also available if needed. 
+
+
+
 
 -- I'd like to share my code for analyzing certain aspects of data gathered by a bike sharing company
- and used Sheets to visualize my findings, which were then shared as a presentation
-
-
--- I want to look at a few things
 
 
 -- Using the code below, I was able in the FROM subquery to take into account other variables that might be needed
@@ -30,12 +30,12 @@ date_diff(ended_at, started_at, minute) as duration
  order by frequency desc
 
 
--- After looking at the most popular durations and plotting to see what the most popular durations are in a range, I found that 
--- I could narrow down some of my analysis
+-- After looking at the most popular durations and plotting to see what the most popular durations are (in a range), I found that I could narrow down some of my analysis
+
+
 -- Next step was looking at the most popular time of day to bike. To make things easier and more readable, I converted the hour extracted into meaningful strings
 
 SELECT 
-
 
 (CASE
 WHEN hour < 12 THEN hour || " am"
@@ -74,8 +74,16 @@ date_diff(ended_at, started_at, minute) as duration
  group by start_station_name
  order by frequency desc
  
- -- Please note that the datasets and tables are not consistent. This is because I used the same code on various tested monthly user data to find consistency in the findings
+ -- I performed the same analysis on the ending stations by changing start_station_name into end_station_name
+ 
+ -- Please note that the datasets' and tables' names are not consistent. This is because I used the same code on various monthly user data to find consistency in the findings
+ -- across all the months and years
+ 
+ 
  
  -- I found insights that were interesting, given the data I had, and I found to have some limitations as well in some of the variables I hoped I could study
- -- More analysis can be done to find more correlations
+ -- More analysis can be done to find more correlations, but to start with there seemed to be a tendancy for shorter rides to events and popular areas, to give just an 
+ -- example on the kind of insights I was looking for in the data
+ 
+ -- Again, findings, viz, and presentation are available for viewing
 
