@@ -1,9 +1,15 @@
+-- Please note the coloring and formatting of the file isn't SQL specific: I used the Big Query Console for running the code and storing the datasets, 
+-- which doesn
+
 -- I'd like to share my code for analyzing certain aspects of data gathered by a bike sharing company
+ and used Sheets to visualize my findings, which were then shared as a presentation
+
+
 -- I want to look at a few things
 
 
 -- Using the code below, I was able in the FROM subquery to take into account other variables that might be needed
---  I was also previously able to identify where the null values are in the data set and what kind of consistency issues we might face
+-- I was also previously able to identify where the null values are in the data set and what kind of consistency issues we might face
 -- Thankfully, most string values were consistent and non-null. However, the station id and names (starting and ending stations) needed to be accounted for
 -- At first, I wanted to know how long do most people use their bikes. This will give me insight into rider behaviour
 
